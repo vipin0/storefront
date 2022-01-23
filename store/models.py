@@ -40,7 +40,7 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField()
     description = models.TextField()
-    price = models.DecimalField(max_digits=6,decimal_places=2,validators=[MinValueValidator(0)])
+    unit_price = models.DecimalField(max_digits=6,decimal_places=2,validators=[MinValueValidator(0)])
     inventory = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     collection = models.ForeignKey(Collection,on_delete=models.PROTECT,related_name='product')
     promotions = models.ManyToManyField(Promotion,related_name='product',blank=True)
