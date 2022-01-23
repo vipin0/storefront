@@ -5,9 +5,6 @@ from django.db import models
 
 
 # Create your models here.
-class Promotion(models.Model):
-    description = models.CharField(max_length=255)
-    discount = models.FloatField()
 
 
 class Customer(models.Model):
@@ -27,6 +24,9 @@ class Address(models.Model):
     customer = models.ForeignKey(Customer,on_delete=models.CASCADE,related_name='addresses')
 
 
+class Promotion(models.Model):
+    description = models.CharField(max_length=255)
+    discount = models.FloatField()
 
 class Collection(models.Model):
     title = models.CharField(max_length=255)
