@@ -66,6 +66,11 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer,on_delete=models.PROTECT,related_name='order')
     placed_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        permissions = [
+            ('cancel_order','Can cancel order')
+        ]
+
 class OrderItem(models.Model):
     order = models.ForeignKey(Order,on_delete=models.PROTECT,related_name='order_item')
     product = models.ForeignKey(Product,on_delete=models.PROTECT,related_name='order_item')
@@ -77,8 +82,8 @@ class Cart(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
 
 class CartItem(models.Model):
-    cart = models.ForeignKey(Cart,on_delete=models.CASCADE,related_name='cart_item')
-    product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='cart_item')
+    cart = models.ForeignKey(Cart,on_delete=models.CASCADE,related_name='items')
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
 
     class Meta:
