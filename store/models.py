@@ -30,7 +30,7 @@ class Address(models.Model):
 
 class Collection(models.Model):
     title = models.CharField(max_length=255)
-    featured_product = models.ForeignKey('Product',null=True,on_delete=models.SET_NULL,related_name='+')
+    featured_product = models.ForeignKey('Product',null=True,blank=True,on_delete=models.SET_NULL,related_name='+')
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
@@ -80,3 +80,9 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart,on_delete=models.CASCADE,related_name='cart_item')
     product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='cart_item')
     quantity = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
+
+class Review(models.Model):
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name="reviews")
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
