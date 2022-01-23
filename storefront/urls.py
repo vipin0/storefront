@@ -26,6 +26,7 @@ admin.site.site_header = 'Store Front'
 admin.site.index_title = 'Admin'
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('store/',include('store.urls'))
 ]
 
 # for serving static files 

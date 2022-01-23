@@ -30,7 +30,7 @@ class Address(models.Model):
 
 class Collection(models.Model):
     title = models.CharField(max_length=255)
-    featured_product = models.ForeignKey('Product',null=True,on_delete=models.SET_NULL,related_name='featured_products')
+    featured_product = models.ForeignKey('Product',null=True,on_delete=models.SET_NULL,related_name='+')
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
@@ -40,10 +40,10 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField()
     description = models.TextField()
-    price = models.DecimalField(max_digits=6,decimal_places=2)
-    inventory = models.PositiveIntegerField()
-    collection = models.ForeignKey(Collection,on_delete=models.PROTECT,related_name='products')
-    promotions = models.ManyToManyField(Promotion,related_name='products')
+    price = models.DecimalField(max_digits=6,decimal_places=2,validators=[MinValueValidator(0)])
+    inventory = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    collection = models.ForeignKey(Collection,on_delete=models.PROTECT,related_name='product')
+    promotions = models.ManyToManyField(Promotion,related_name='product',blank=True)
     updated_on = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
@@ -63,12 +63,12 @@ class Order(models.Model):
                             choices=PAYMENT_STATUS_CHOICES,
                             default=PAYMENT_STATUS_PENDING
                     )
-    customer = models.ForeignKey(Customer,on_delete=models.PROTECT,related_name='customer')
+    customer = models.ForeignKey(Customer,on_delete=models.PROTECT,related_name='order')
     placed_at = models.DateTimeField(auto_now_add=True)
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order,on_delete=models.PROTECT,related_name='order_items')
-    product = models.ForeignKey(Product,on_delete=models.PROTECT,related_name='order_items')
+    order = models.ForeignKey(Order,on_delete=models.PROTECT,related_name='order_item')
+    product = models.ForeignKey(Product,on_delete=models.PROTECT,related_name='order_item')
     quantity = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
     unit_price = models.DecimalField(max_digits=6,decimal_places=2)
 
@@ -77,6 +77,6 @@ class Cart(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
 
 class CartItem(models.Model):
-    cart = models.ForeignKey(Cart,on_delete=models.CASCADE,related_name='cart_items')
-    product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='cart_items')
+    cart = models.ForeignKey(Cart,on_delete=models.CASCADE,related_name='cart_item')
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='cart_item')
     quantity = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])

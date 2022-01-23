@@ -72,13 +72,13 @@ class CollectionAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         return super().get_queryset(request).annotate(
-            products_count=Count('products')
+            products_count=Count('product')
         )
 
 
 @admin.register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ['first_name', 'last_name', 'orders']
+    list_display = ['first_name', 'last_name', 'phone' ,'orders']
     # list_editable = ['membership']
     list_per_page = 10
     ordering = ['first_name', 'last_name']
@@ -96,8 +96,14 @@ class CustomerAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         return super().get_queryset(request).annotate(
-            orders_count=Count('customer')
+            orders_count=Count('order')
         )
+    def get_readonly_fields(self, request, obj=None):
+        if obj: # editing an existing object
+            # All model fields as read_only
+            return self.readonly_fields + tuple(['user'])
+            # return self.readonly_fields + tuple([item.name for item in obj._meta.fields])
+        return self.readonly_fields
 
 
 class OrderItemInline(admin.TabularInline):
@@ -113,3 +119,10 @@ class OrderAdmin(admin.ModelAdmin):
     autocomplete_fields = ['customer']
     inlines = [OrderItemInline]
     list_display = ['id', 'placed_at', 'customer']
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj: # editing an existing object
+            # All model fields as read_only
+            return self.readonly_fields + tuple(['customer'])
+            # return self.readonly_fields + tuple([item.name for item in obj._meta.fields])
+        return self.readonly_fields
