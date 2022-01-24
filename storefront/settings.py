@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
+from datetime import timedelta
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'djoser', # for jwt based auth
     'django_filters',
     'core',
     'store',
@@ -47,6 +49,7 @@ INSTALLED_APPS = [
     'likes',
 ]
 
+# auth user model setting if using custom  
 AUTH_USER_MODEL = 'core.User'
 
 MIDDLEWARE = [
@@ -138,11 +141,28 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+# rest_framework settings
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
     'COERCE_DECIMAL_TO_STRING':False
 }
 
+# simple jwt settings
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+   'ACCESS_TOKEN_LIFETIME': timedelta(days=1)
+}
+
+# djoser settings
+
+DJOSER = {
+    'SERIALIZERS': {
+        'user_create': 'core.serializers.UserCreateSerializer',
+        'current_user': 'core.serializers.UserSerializer'
+    }
+}
 # setting releted to debug toolbar
 if DEBUG:
     INSTALLED_APPS += [

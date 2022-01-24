@@ -1,6 +1,6 @@
 from decimal import Decimal
 from rest_framework import serializers
-from .models import Cart, CartItem, Collection, Product, Review
+from .models import Cart, CartItem, Collection, Customer, Product, Review
 
 TAX_PERCENT = 1.1
 
@@ -98,3 +98,13 @@ class UpdateCartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
         fields = ['quantity']
+
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField(read_only=True)
+    email = serializers.CharField(source='user',read_only=True)
+
+    class Meta:
+        model = Customer
+        fields = ['id','user_id','first_name','last_name','email','phone','birth_date',] 

@@ -1,8 +1,10 @@
 from uuid import uuid4
+from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.conf import settings
 from django.db import models
 
+User = get_user_model()
 
 # Create your models here.
 
@@ -12,7 +14,7 @@ class Customer(models.Model):
     last_name = models.CharField(max_length=40)
     phone = models.CharField(max_length=20,null=True,blank=True)
     birth_date = models.DateField(null=True)
-    user = models.OneToOneField(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"

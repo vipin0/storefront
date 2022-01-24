@@ -1,5 +1,6 @@
 from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import mixins
 from rest_framework.response import Response
@@ -7,7 +8,7 @@ from rest_framework import status
 from rest_framework.viewsets import ModelViewSet,GenericViewSet
 from store.filters import ProductFilter
 from store.models import Cart, CartItem, Collection, Customer, OrderItem, Product, Review
-from store.serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, ProductSerializer, ReviewSerializer, UpdateCartItemSerializer
+from store.serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, CustomerSerializer, ProductSerializer, ReviewSerializer, UpdateCartItemSerializer
 from store.paginations import DefaultPagination
 # Create your views here.
 
@@ -83,3 +84,23 @@ class CartItemViewSet(ModelViewSet):
 
     def get_serializer_context(self):
         return {'cart_id':self.kwargs['cart_pk']}
+
+
+class CustomerViewSet(mixins.CreateModelMixin,mixins.RetrieveModelMixin,mixins.UpdateModelMixin,GenericViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+
+    @action(detail=False,methods=['GET','PUT'])
+    def me(self,request):
+        user_id = self.request.user.id
+        (customer, created) = Customer.objects.get_or_create(user_id=user_id)
+         
+        if self.request.method == 'GET':
+            serializer = CustomerSerializer(customer)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        else:
+            serializer = CustomerSerializer(customer,data=self.request.data)
+            serializer.is_valid()
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+
