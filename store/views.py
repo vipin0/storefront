@@ -9,7 +9,7 @@ from rest_framework import status
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from store.filters import ProductFilter
 from store.models import Cart, CartItem, Collection, Customer, Order, OrderItem, Product, Review
-from store.permissions import FullDjangoModelPermission, IsAdminOrReadOnly, ViewCustomerHistoryPermission
+from store.permissions import IsAdminOrReadOnly, ViewCustomerHistoryPermission
 from store.serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, CreateOrderSerializer, CustomerSerializer, OrderSerializer, ProductSerializer, ReviewSerializer, UpdateCartItemSerializer, UpdateOrderSerializer
 from store.paginations import DefaultPagination
 # Create your views here.
@@ -147,6 +147,10 @@ class OrderViewSet(ModelViewSet):
         if user.is_staff:
             return Order.objects.prefetch_related('items').prefetch_related('items__product').all()
 
-        (customer, created) = Customer.objects.only(
-            'id').get_or_create(user_id=user.id)
-        return Order.objects.filter(customer_id=customer.id)
+        # handelled by signals
+        customer = Customer.objects.only(
+            'id').get(user_id=user.id)
+        return Order.objects.prefetch_related('items')\
+                            .prefetch_related('items__product')\
+                            .select_related('customer')\
+                            .filter(customer_id=customer.id)

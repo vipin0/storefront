@@ -14,7 +14,7 @@ from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
 
-# load_dotenv()
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'store',
     'tags',
     'likes',
+    'drf_yasg',
 ]
 
 # auth user model setting if using custom  
@@ -146,7 +147,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'COERCE_DECIMAL_TO_STRING':False
+    'COERCE_DECIMAL_TO_STRING':False,
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
 
 # simple jwt settings
