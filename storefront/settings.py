@@ -23,12 +23,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY','chnage-this-django-key-to-more-secure-key')
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY', 'chnage-this-django-key-to-more-secure-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = os.environ.get('DEBUG',False)
+DEBUG = os.environ.get('DEBUG', False)
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS','*').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 
 # Application definition
@@ -41,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'djoser', # for jwt based auth
+    'djoser',  # for jwt based auth
     'django_filters',
     'core',
     'store',
@@ -50,7 +51,7 @@ INSTALLED_APPS = [
     'drf_yasg',
 ]
 
-# auth user model setting if using custom  
+# auth user model setting if using custom
 AUTH_USER_MODEL = 'core.User'
 
 MIDDLEWARE = [
@@ -89,12 +90,12 @@ ASGI_APPLICATION = 'storefront.asgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('ENGINE','django.db.backends.sqlite3'),
-        'HOST': os.environ.get('HOST',''),
-        'PORT': os.environ.get('PORT',''),
-        'NAME': os.environ.get('NAME',BASE_DIR / 'db.sqlite3'),
-        'USER': os.environ.get('USER',''),
-        'PASSWORD':os.environ.get('PASSWORD','')
+        'ENGINE': os.environ.get('ENGINE', 'django.db.backends.sqlite3'),
+        'HOST': os.environ.get('HOST', ''),
+        'PORT': os.environ.get('PORT', ''),
+        'NAME': os.environ.get('NAME', BASE_DIR / 'db.sqlite3'),
+        'USER': os.environ.get('USER', ''),
+        'PASSWORD': os.environ.get('PASSWORD', '')
     }
 }
 
@@ -147,14 +148,14 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'COERCE_DECIMAL_TO_STRING':False,
+    'COERCE_DECIMAL_TO_STRING': False,
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
 
 # simple jwt settings
 SIMPLE_JWT = {
-   'AUTH_HEADER_TYPES': ('JWT',),
-   'ACCESS_TOKEN_LIFETIME': timedelta(days=1)
+    'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1)
 }
 
 # djoser settings
@@ -162,16 +163,28 @@ SIMPLE_JWT = {
 DJOSER = {
     'SERIALIZERS': {
         'user_create': 'core.serializers.UserCreateSerializer',
-        'current_user': 'core.serializers.UserSerializer'
+        'current_user': 'core.serializers.UserSerializer',
+        'user': 'core.serializers.UserSerializer'
     }
+}
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    # 'SECURITY_DEFINITIONS': {
+    #     'Bearer': {
+    #         'type': 'apiKey',
+    #         'name': 'Authorization',
+    #         'in': 'header'
+    #     },
+    # }
 }
 # setting releted to debug toolbar
 if DEBUG:
     INSTALLED_APPS += [
         'debug_toolbar',
     ]
-    
-    MIDDLEWARE+=[
+
+    MIDDLEWARE += [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
     ]
     INTERNAL_IPS = [

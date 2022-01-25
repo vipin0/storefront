@@ -35,8 +35,6 @@ schema_view = get_schema_view(
    public=True,
 )
 
-admin.site.site_header = 'Store Front'
-admin.site.index_title = 'Admin'
 urlpatterns = [
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     # path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

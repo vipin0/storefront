@@ -5,6 +5,8 @@ from django.utils.html import format_html, urlencode
 from django.urls import reverse
 from . import models
 
+admin.site.site_header = 'Store Front'
+admin.site.index_title = 'Admin'
 
 class InventoryFilter(admin.SimpleListFilter):
     title = 'inventory'
