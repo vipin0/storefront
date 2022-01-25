@@ -97,8 +97,8 @@ store_customers_partial_update
 ```DELETE ​/store​/customers​/{id}​/```
 store_customers_delete
 
-```GET ​/store​/customers​/{id}​/history​/```
-store_customers_history
+```GET ​/store​/customers​/orders/```
+store_customers_orders_read
 
 ```GET ​/store​/orders​/```
 store_orders_list
