@@ -99,10 +99,21 @@ class CustomerViewSet(ModelViewSet):
     def history(self, request, pk):
         return Response('ok')
 
+
+    @action(detail=False,methods=['GET'],permission_classes=[IsAuthenticated])
+    def orders(self,request):
+        user_id = request.user.id
+        customer = Customer.objects.get(user_id=user_id)
+        orders = Order.objects.filter(customer=customer).prefetch_related('items').prefetch_related('items__product')
+        serializer = OrderSerializer(orders,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+
     @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
     def me(self, request):
         user_id = self.request.user.id
-        (customer, created) = Customer.objects.get_or_create(user_id=user_id)
+        # (customer, created) = Customer.objects.get_or_create(user_id=user_id)
+        customer = Customer.objects.get(user_id=user_id)
 
         if self.request.method == 'GET':
             serializer = CustomerSerializer(customer)
