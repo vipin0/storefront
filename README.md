@@ -152,7 +152,7 @@ store_products_reviews_partial_update
 store_products_reviews_delete
 <hr>
 
-### User Endpoints : (https://storefront-ecom.herokuapp.com/users/)
+### User Endpoints : (https://storefront-ecom.herokuapp.com/auth)
 
 ```POST ​/auth​/jwt​/create​/```
 auth_jwt_create_create
@@ -216,7 +216,6 @@ auth_users_partial_update
 
 ```DELETE ​/auth​/users​/{id}​/```
 auth_users_delete
-
 
 
 
