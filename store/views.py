@@ -95,9 +95,9 @@ class CustomerViewSet(ModelViewSet):
     pagination_class = DefaultPagination
     permission_classes = [IsAdminUser]
 
-    @action(detail=True, permission_classes=[ViewCustomerHistoryPermission])
-    def history(self, request, pk):
-        return Response('ok')
+    # @action(detail=True, permission_classes=[ViewCustomerHistoryPermission])
+    # def history(self, request, pk):
+    #     return Response('ok')
 
 
     @action(detail=False,methods=['GET'],permission_classes=[IsAuthenticated])
