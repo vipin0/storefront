@@ -26,12 +26,12 @@ python manage.py runserver
 - ```/store  ```  store api root
 
 ## View live demo
-- [Swagger UI](https://storefront-ecom.herokuapp.com/)
-- [DRF Browsable API](https://storefront-ecom.herokuapp.com/store/)
+- [Swagger UI](http://storefront.dev.vipinyadav.in/)
+- [DRF Browsable API](http://storefront.dev.vipinyadav.in/store/)
 
 ## Working Endpoints
 
-### Store Endpoints (https://storefront-ecom.herokuapp.com/store) :
+### Store Endpoints (http://storefront.dev.vipinyadav.in/store) :
 
 ```POST /store​/carts​/```  store_carts_create
 
@@ -152,7 +152,7 @@ store_products_reviews_partial_update
 store_products_reviews_delete
 <hr>
 
-### User Endpoints : (https://storefront-ecom.herokuapp.com/auth)
+### User Endpoints : (http://storefront.dev.vipinyadav.in/auth)
 
 ```POST ​/auth​/jwt​/create​/```
 auth_jwt_create_create
